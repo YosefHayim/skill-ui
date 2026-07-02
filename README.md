@@ -1,5 +1,9 @@
 # planpage
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/YosefHayim/planpage/main/public/hero.png" alt="planpage turns an agent's terminal-bound plan into a beautiful, self-contained HTML page" width="100%" />
+</p>
+
 Render an agent's **plan, review-gate, or report** as a beautiful, self-contained **local HTML page** — authored as Preact components rendered to static HTML, with an opt-in post-back server so the browser can hand a decision back to your agent. Like mcp-ui, but for local terminal skills.
 
 Built for skill and agent authors — and the developers who read what an agent proposes. Reader-first: the design center is the person *reading* the plan.
