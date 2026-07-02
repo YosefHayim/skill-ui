@@ -6,9 +6,10 @@ skill-ui renders a skill's plan, review-gate, or report as a beautiful, self-con
 
 Three layers, split pure-from-effectful:
 
-- **Pure render core** — `components/` (shared pieces) compose into `templates/` (gallery pages); `render()` turns a template tree into a full HTML-document string. No I/O here.
+- **Pure render core** — `components/` (plan-native pieces: callouts, steps, timelines, option-compares, risk lists, annotated code, …) compose into `templates/` (pages like the flagship `PlanBrief` and the auto-captured `Library`); `render()` turns a tree into a full HTML-document string. No I/O here.
 - **Effect edges** — `server/` serves a rendered page on loopback and collects one decision (the post-back); `cli/` is the dual-mode front door that reads data, writes/opens files, and runs the server.
 - **Contracts** — the shared `Decision` shape the post-back returns.
+- **The collection** — `gallery/` registers every component (SSOT + a drift test), so `Library` (`skill-ui library`) is a living, always-complete showcase.
 
 ## The actors
 

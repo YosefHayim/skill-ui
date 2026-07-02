@@ -30,6 +30,8 @@ const html = render(
 skill-ui render before-after --sample --open                                 # preview from sample data
 skill-ui render code-style-plan --data plan.json --serve --decision out.json # interactive gate
 skill-ui new my-template                                                      # scaffold a template
+skill-ui library --open                                                       # the living component gallery
+skill-ui capture                                                              # check the gallery is in sync
 skill-ui                                                                      # (in a TTY) interactive menu
 ```
 
@@ -37,8 +39,23 @@ Data goes in as JSON via `--data <file>` or piped stdin; `skill-ui render <templ
 
 ## Templates
 
+- **plan-brief** — a whole agent plan on one page: summary · notes · steps · options · risks · annotated code (the flagship).
 - **before-after** — green/red before→after diffs (the workhorse report).
 - **code-style-plan** — the pick-the-code gallery + canonical example + CLI flow (interactive gate).
+- **library** — the living, auto-captured component gallery (`skill-ui library`).
+
+## Components
+
+Plan-native, reader-first pieces you compose into a page:
+
+- **Notes** — `Callout` (note · warn · risk · decision · …), `RiskList` (severity-tagged tradeoffs).
+- **Sequence** — `Steps`, `Timeline`, `StatusChip`.
+- **Brainstorm** — `OptionCompare` (N-way pros/cons + verdict), `PickBlock` (✓ / ✗).
+- **Metrics** — `PlanSummary` (blast-radius stats).
+- **Code** — `CodeBlock`, `DiffBlock`, `AnnotatedCode` (inline rationale).
+- **Layout** — `SectionCard`, `Accordion`, `TreePanel`, `Flow` (Mermaid).
+
+Every component is showcased live — run `skill-ui library --open`.
 
 ## How it works
 

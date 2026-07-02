@@ -10,11 +10,12 @@ Single source of truth for working in **skill-ui**. `CLAUDE.md` / `GEMINI.md` po
 
 | Path | Purpose |
 |---|---|
-| `src/components/` | shared primitives (flat) — `Shell`, `SectionCard`, `PickBlock`, `DiffBlock`, `TreePanel`, `Flow`, `CodeBlock`, `SubmitBar` |
-| `src/templates/<Name>/` | gallery pages (folder-per-template: component + test + README); registry in `templates/index.tsx` |
+| `src/components/` | shared primitives (flat), grouped by role — layout (`Shell` · `SectionCard` · `TreePanel` · `Accordion`) · notes (`Callout` · `RiskList`) · sequence (`StatusChip` · `Steps` · `Timeline`) · brainstorm (`PickBlock` · `OptionCompare`) · metrics (`PlanSummary`) · code (`DiffBlock` · `CodeBlock` · `AnnotatedCode`) · diagram (`Flow`) · `SubmitBar` |
+| `src/templates/<Name>/` | pages (folder-per-template: component + test + README) — `BeforeAfter`, `CodeStylePlan`, `PlanBrief` (flagship agent-plan page), `Library` (auto-captured gallery); registry in `templates/index.tsx` |
+| `src/gallery/` | the living collection — `registry` (SSOT) · `capture` (pure diff) · sync test; powers `Library` + `skill-ui capture` |
 | `src/render/` | pure engine — `render()`, `Shell` wiring, `raw()`, theme, client scripts |
 | `src/server/` | opt-in post-back — `serve` (ephemeral port, never-hang), `Decision` |
-| `src/cli/` | dual-mode CLI (commander) — `render` / `serve` / `new`; bare TTY → `menu` |
+| `src/cli/` | dual-mode CLI (commander) — `render` / `serve` / `new` / `library` / `capture`; bare TTY → `menu`; shared `io` (open/writeTemp) |
 | `src/contracts/` | shared types — `Decision` |
 | `src/index.ts` | public API barrel |
 | `docs/adr/current/` | decisions (why) |
@@ -29,6 +30,7 @@ Single source of truth for working in **skill-ui**. `CLAUDE.md` / `GEMINI.md` po
 - **Errors by layer** — render throws · server exit codes (0/2/3, never-hang) · CLI top-catch.
 - **Naming** — Comp `PascalCase` · props `XProps` · fns `camelCase` · consts `SCREAMING_SNAKE` · ids/flags `kebab-case`.
 - **Tests** — vitest, snapshot/assertion-first, co-located.
+- **Gallery is captured** — every `src/components/*.tsx` (bar `Shell`/`SubmitBar`) has a `GALLERY` entry in `src/gallery/registry.tsx`; the `gallery-sync` test fails on drift (`skill-ui capture` stubs the rest).
 - **Never** — micro-helpers (`isRecord`…), nested ternaries, generic names (`handleData`…), default exports, restyling the shell.
 - **biome** is the one gate. **Reuse before create.** SSOT / KISS / YAGNI / DRY.
 
@@ -37,6 +39,8 @@ Single source of truth for working in **skill-ui**. `CLAUDE.md` / `GEMINI.md` po
 ```bash
 npm run verify     # biome ci + tsc --noEmit + vitest  (the one gate)
 npm run cli        # dual-mode CLI (bare = menu; -- <sub> = direct)
+npm run cli -- library --open   # render the auto-captured component gallery
+npm run cli -- capture          # check the gallery registry is in sync
 npm test           # vitest
 npm run lint:fix   # biome check --write
 npm run build      # tsc -p tsconfig.build.json → dist/

@@ -72,6 +72,10 @@ Pure render **throws** an actionable `Error`; the **server** uses exit codes (`0
 ### Tests: vitest, snapshot-first, co-located · [taste]
 `BeforeAfter.test.tsx` beside source; `render(<T … />)` → assert on the HTML string (doctype, content, `data-id`s); plus units for escaping + that boundary asserts throw. Effectful `server`/`cli` get integration coverage as they grow.
 
+### Gallery: every component is captured · [test: gallery-sync]
+Each `src/components/*.tsx` (bar infra `Shell`/`SubmitBar`) carries a `GALLERY` entry in `src/gallery/registry.tsx` — `blurb` · `usage` · `props` · a live `sample()`. `src/gallery/registry.test.ts` fails on drift; `skill-ui capture` prints a paste-ready stub for anything missing. Fixed enum→style maps are `Record<Union, string>` (e.g. Callout `tone`, `StatusChip` status) — no arbitrary values.
+_Why:_ the library-ui gallery is only trustworthy if it can't silently miss a component.
+
 ## Canonical example
 
 ```tsx
@@ -106,6 +110,11 @@ export const BeforeAfter = ({ title, diffs }: BeforeAfterProps) => {
 3. Register it in `src/templates/index.tsx` (`TEMPLATES` + a `SAMPLES` entry) and export from `src/index.ts`.
 4. `npm run verify` (biome + tsc + vitest) green.
 
+### How to add a component
+1. `src/components/<Name>.tsx` — arrow-const, exported `readonly <Name>Props`, pure (data → JSX). One component per file; local helpers are `function` declarations below.
+2. Register it in `src/gallery/registry.tsx` (`blurb` · `usage` · `props` · a live `sample`), or run `skill-ui capture` for a stub — the `gallery-sync` test enforces it.
+3. Export from `src/index.ts`, then `npm run verify` green.
+
 ### How to add a CLI command
 1. Add the subcommand in `src/cli/` (commander), routed into the SAME functions the menu uses.
 2. Give it a real `--help`; a bare TTY still opens the menu; non-TTY defers to flags and never prompts.
@@ -115,6 +124,8 @@ export const BeforeAfter = ({ title, diffs }: BeforeAfterProps) => {
 Write new code like these:
 - `src/templates/BeforeAfter/BeforeAfter.tsx` — the composed template style.
 - `src/components/PickBlock.tsx` — a shared interactive component with a `data-id`.
+- `src/components/Timeline.tsx` — a plan-native primitive composing the shared `StatusChip`.
+- `src/templates/Library/Library.tsx` — reads the `GALLERY` registry, groups, renders live previews.
 - `src/server/serve.ts` — an effect edge: exit codes, never-hang, helpers below.
 
 ## Never

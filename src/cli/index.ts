@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import { TEMPLATES } from "../templates";
+import { captureCommand } from "./capture";
+import { libraryCommand } from "./library";
 import { runMenu } from "./menu";
 import { newCommand } from "./new";
 import { renderCommand } from "./render";
@@ -38,6 +40,20 @@ program
   .description("scaffold a new template folder")
   .argument("<name>", "kebab-case template name")
   .action(newCommand);
+
+program
+  .command("library")
+  .description("render the auto-captured component gallery")
+  .option("--out <file>", "write the HTML to this path")
+  .option("--open", "open the rendered gallery in the browser")
+  .option("--theme <theme>", "auto | light | dark", "auto")
+  .action(libraryCommand);
+
+program
+  .command("capture")
+  .description("report components missing from the gallery registry (dev)")
+  .option("--check", "exit non-zero if the registry has drifted (for CI)")
+  .action(captureCommand);
 
 async function main(): Promise<void> {
   const hasArgs = process.argv.length > 2;

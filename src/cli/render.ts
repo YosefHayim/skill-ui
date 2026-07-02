@@ -1,4 +1,3 @@
-import { spawn } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -6,6 +5,7 @@ import { render } from "../render/render";
 import type { Theme } from "../render/theme";
 import { serve } from "../server/serve";
 import { SAMPLES, TEMPLATES, type TemplateName } from "../templates";
+import { openPath, writeTemp } from "./io";
 
 export interface RenderCommandOptions {
   readonly data?: string;
@@ -65,20 +65,4 @@ function readStdin(): Promise<string> {
     });
     process.stdin.on("end", () => resolve(text));
   });
-}
-
-function writeTemp(html: string): string {
-  const path = join(tmpdir(), `skill-ui-${process.pid}.html`);
-  writeFileSync(path, html);
-  return path;
-}
-
-function openPath(path: string): void {
-  const cmd =
-    process.platform === "darwin" ? "open" : process.platform === "win32" ? "start" : "xdg-open";
-  spawn(cmd, [path], {
-    stdio: "ignore",
-    detached: true,
-    shell: process.platform === "win32",
-  }).unref();
 }

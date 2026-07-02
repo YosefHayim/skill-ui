@@ -1,6 +1,8 @@
 import type { VNode } from "preact";
 import { BeforeAfter, type BeforeAfterProps } from "./BeforeAfter/BeforeAfter";
 import { CodeStylePlan, type CodeStylePlanProps } from "./CodeStylePlan/CodeStylePlan";
+import { Library } from "./Library/Library";
+import { PlanBrief, type PlanBriefProps } from "./PlanBrief/PlanBrief";
 
 /**
  * Registry mapping a kebab-case template name → a factory that builds its VNode from raw data.
@@ -10,6 +12,8 @@ import { CodeStylePlan, type CodeStylePlanProps } from "./CodeStylePlan/CodeStyl
 export const TEMPLATES = {
   "before-after": (data: unknown): VNode => <BeforeAfter {...(data as BeforeAfterProps)} />,
   "code-style-plan": (data: unknown): VNode => <CodeStylePlan {...(data as CodeStylePlanProps)} />,
+  "plan-brief": (data: unknown): VNode => <PlanBrief {...(data as PlanBriefProps)} />,
+  library: (): VNode => <Library />,
 } satisfies Record<string, (data: unknown) => VNode>;
 
 export type TemplateName = keyof typeof TEMPLATES;
@@ -40,4 +44,60 @@ export const SAMPLES: Record<TemplateName, unknown> = {
     },
     cliFlow: "flowchart LR\n  A[skill-ui] -->|TTY| M[menu]\n  A -->|flags| F[render / serve / new]",
   },
+  "plan-brief": {
+    title: "Add dark-mode toggle",
+    summary: [
+      { label: "Files", value: "6" },
+      { label: "Risk", value: "low" },
+      { label: "Confidence", value: "85%" },
+    ],
+    notes: [
+      {
+        tone: "decision",
+        title: "Approach",
+        body: "Class-based dark mode, prepainted to avoid a flash.",
+      },
+    ],
+    steps: [
+      { label: "Add the toggle button", status: "done" },
+      {
+        label: "Prepaint the theme",
+        status: "doing",
+        detail: "read the OS preference before paint",
+      },
+      { label: "Persist the choice", status: "todo" },
+    ],
+    options: [
+      {
+        name: "Class strategy",
+        pros: ["no flash", "manual override"],
+        cons: ["needs prepaint"],
+        verdict: "chosen",
+      },
+      {
+        name: "Media-query only",
+        pros: ["zero JS"],
+        cons: ["no manual toggle"],
+        verdict: "rejected",
+      },
+    ],
+    risks: [
+      { risk: "Flash of unstyled content", severity: "low", mitigation: "prepaint in <head>" },
+    ],
+    code: {
+      label: "theme.ts",
+      code: "const dark = prefersDark()\ndocument.documentElement.classList.toggle('dark', dark)",
+      annotations: [
+        { line: 1, note: "read the OS preference" },
+        { line: 2, note: "apply before first paint" },
+      ],
+    },
+    details: [
+      {
+        summary: "Why class-based over media-query?",
+        detail: "It lets a manual toggle override the OS setting.",
+      },
+    ],
+  },
+  library: {},
 };
