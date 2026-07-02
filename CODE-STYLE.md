@@ -1,10 +1,10 @@
 # CODE-STYLE.md
 
-How code is written in **skill-ui**. Prescriptive. The rules digest is mirrored into `AGENTS.md`; this file is the source — edit here. `deslop` enforces it per-diff.
+How code is written in **planpage**. Prescriptive. The rules digest is mirrored into `AGENTS.md`; this file is the source — edit here. `deslop` enforces it per-diff.
 
 ## Stack & framework practices
 
-skill-ui is a JSX→static HTML render library (Preact) + a dual-mode CLI (commander + a `@clack/prompts` interactive menu) + an opt-in post-back server. For practices this file does **not** restate:
+planpage is a JSX→static HTML render library (Preact) + a dual-mode CLI (commander + a `@clack/prompts` interactive menu) + an opt-in post-back server. For practices this file does **not** restate:
 
 - writing / consuming skills → `write-a-skill`
 
@@ -73,7 +73,7 @@ Pure render **throws** an actionable `Error`; the **server** uses exit codes (`0
 `BeforeAfter.test.tsx` beside source; `render(<T … />)` → assert on the HTML string (doctype, content, `data-id`s); plus units for escaping + that boundary asserts throw. Effectful `server`/`cli` get integration coverage as they grow.
 
 ### Gallery: every component is captured · [test: gallery-sync]
-Each `src/components/*.tsx` (bar infra `Shell`/`SubmitBar`) carries a `GALLERY` entry in `src/gallery/registry.tsx` — `blurb` · `usage` · `props` · a live `sample()`. `src/gallery/registry.test.ts` fails on drift; `skill-ui capture` prints a paste-ready stub for anything missing. Fixed enum→style maps are `Record<Union, string>` (e.g. Callout `tone`, `StatusChip` status) — no arbitrary values.
+Each `src/components/*.tsx` (bar infra `Shell`/`SubmitBar`) carries a `GALLERY` entry in `src/gallery/registry.tsx` — `blurb` · `usage` · `props` · a live `sample()`. `src/gallery/registry.test.ts` fails on drift; `planpage capture` prints a paste-ready stub for anything missing. Fixed enum→style maps are `Record<Union, string>` (e.g. Callout `tone`, `StatusChip` status) — no arbitrary values.
 _Why:_ the library-ui gallery is only trustworthy if it can't silently miss a component.
 
 ## Canonical example
@@ -105,14 +105,14 @@ export const BeforeAfter = ({ title, diffs }: BeforeAfterProps) => {
 ## Recipes
 
 ### How to add a template
-1. `src/templates/<Name>/` → `<Name>.tsx` (arrow-const component, exported `readonly <Name>Props`, assert required props), `<Name>.test.tsx` (render + assert + throws), `README.md` (what it renders + an example `data.json`). Or run `skill-ui new <name>`.
+1. `src/templates/<Name>/` → `<Name>.tsx` (arrow-const component, exported `readonly <Name>Props`, assert required props), `<Name>.test.tsx` (render + assert + throws), `README.md` (what it renders + an example `data.json`). Or run `planpage new <name>`.
 2. Compose from `components/`; add a new shared component only on a real second consumer.
 3. Register it in `src/templates/index.tsx` (`TEMPLATES` + a `SAMPLES` entry) and export from `src/index.ts`.
 4. `npm run verify` (biome + tsc + vitest) green.
 
 ### How to add a component
 1. `src/components/<Name>.tsx` — arrow-const, exported `readonly <Name>Props`, pure (data → JSX). One component per file; local helpers are `function` declarations below.
-2. Register it in `src/gallery/registry.tsx` (`blurb` · `usage` · `props` · a live `sample`), or run `skill-ui capture` for a stub — the `gallery-sync` test enforces it.
+2. Register it in `src/gallery/registry.tsx` (`blurb` · `usage` · `props` · a live `sample`), or run `planpage capture` for a stub — the `gallery-sync` test enforces it.
 3. Export from `src/index.ts`, then `npm run verify` green.
 
 ### How to add a CLI command
@@ -131,7 +131,7 @@ Write new code like these:
 
 ## Never
 
-The AI-slop fingerprint for skill-ui:
+The AI-slop fingerprint for planpage:
 - giveaway micro-helpers — `isRecord`, `isDefined`, `ensureArray`, `noop` · one-use wrappers · defensive guards the props type already proves · `[taste]`
 - nested ternaries in JSX — flatten to early return / lookup / subcomponent · `[lint: noNestedTernary]`
 - generic names — `handleData`, `processItem`, `result`, `temp`, `data2` · `[taste]`

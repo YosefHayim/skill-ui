@@ -27,7 +27,7 @@ export const SAMPLES: Record<TemplateName, unknown> = {
     ],
   },
   "code-style-plan": {
-    title: "skill-ui — code style",
+    title: "planpage — code style",
     picks: [
       {
         id: "rule.component-form",
@@ -42,7 +42,7 @@ export const SAMPLES: Record<TemplateName, unknown> = {
       label: "src/templates/BeforeAfter/BeforeAfter.tsx",
       code: "export const BeforeAfter = ({ title, diffs }: BeforeAfterProps) => …",
     },
-    cliFlow: "flowchart LR\n  A[skill-ui] -->|TTY| M[menu]\n  A -->|flags| F[render / serve / new]",
+    cliFlow: "flowchart LR\n  A[planpage] -->|TTY| M[menu]\n  A -->|flags| F[render / serve / new]",
   },
   "plan-brief": {
     title: "Add dark-mode toggle",

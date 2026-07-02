@@ -6,16 +6,16 @@ import { newCommand } from "./new";
 import { renderCommand } from "./render";
 import { serveCommand } from "./serve";
 
-/** The interactive front door: bare `skill-ui` in a TTY. Every branch calls the same command fns. */
+/** The interactive front door: bare `planpage` in a TTY. Every branch calls the same command fns. */
 export const runMenu = async (): Promise<void> => {
-  intro("skill-ui");
+  intro("planpage");
   const action = await select({
     message: "What do you want to do?",
     options: [
       { value: "preview", label: "Preview a template", hint: "render sample data → browser" },
       { value: "library", label: "Browse the component library" },
       { value: "serve", label: "Collect a decision", hint: "serve an HTML file, post back" },
-      { value: "init", label: "Scaffold into my agent", hint: "add a skill wired to skill-ui" },
+      { value: "init", label: "Scaffold into my agent", hint: "add a skill wired to planpage" },
       { value: "new", label: "Scaffold a new template" },
     ],
   });
@@ -64,7 +64,7 @@ export const runMenu = async (): Promise<void> => {
 
   if (action === "init") {
     initCommand({});
-    outro("Scaffolded — your agent can now render plans through skill-ui.");
+    outro("Scaffolded — your agent can now render plans through planpage.");
     return;
   }
 

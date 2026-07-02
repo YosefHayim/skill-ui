@@ -1,6 +1,8 @@
 # 0012 — Published npm name is scoped: `@yosefsabag/skill-ui`
 
-**Status:** accepted (2026-07-02)
+> **Superseded by [ADR 0013](0013-unscoped-name-planpage.md)** — the scoped name was reverted in favour of the unscoped, distinct name `planpage`. Kept for the similarity-guard finding below, which still holds.
+
+**Status:** superseded (2026-07-02)
 
 ## Context
 

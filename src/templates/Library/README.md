@@ -7,20 +7,20 @@ Unlike other templates it takes no JSON data: it reads the `GALLERY` registry (`
 ## Render
 
 ```tsx
-import { render } from "skill-ui";
-import { Library } from "skill-ui";
+import { render } from "planpage";
+import { Library } from "planpage";
 const html = render(<Library />);
 ```
 
 From the CLI:
 
 ```bash
-skill-ui library --open          # render the gallery and open it
-skill-ui capture                 # report any component missing from the registry
+planpage library --open          # render the gallery and open it
+planpage capture                 # report any component missing from the registry
 ```
 
 ## Adding a component to the gallery
 
 1. Write `src/components/<Name>.tsx`.
-2. Add an entry to `GALLERY` in `src/gallery/registry.tsx` (`blurb` · `usage` · `props` · `sample`), or run `skill-ui capture` to print a stub.
+2. Add an entry to `GALLERY` in `src/gallery/registry.tsx` (`blurb` · `usage` · `props` · `sample`), or run `planpage capture` to print a stub.
 3. `npm run verify` — the `gallery-sync` test must be green.

@@ -1,10 +1,10 @@
 # AGENTS.md
 
-Single source of truth for working in **skill-ui**. `CLAUDE.md` / `GEMINI.md` point here.
+Single source of truth for working in **planpage**. `CLAUDE.md` / `GEMINI.md` point here.
 
 ## What this is
 
-**skill-ui** — a reusable, open-source kit that renders a skill's plan / gate / report as a beautiful, self-contained **local HTML** page. Reader-first: the design center is the developer *reading* the plan. Authored as **Preact components → static HTML** (`render(<Template {...data} />) → string`); a static render is the floor, interactivity is opt-in islands (the `serve` **post-back** · the gallery **filter**). Clear of mcp-ui / MCP Apps (the protocol/host lane). Published scoped as **`@yosefsabag/skill-ui`** (the `skill-ui` bin is unchanged — ADR 0012). Seeded by extracting the `skill-ui` spike from `dufflebag`, which becomes a thin consumer.
+**planpage** — a reusable, open-source kit that renders a skill's plan / gate / report as a beautiful, self-contained **local HTML** page. Reader-first: the design center is the developer *reading* the plan. Authored as **Preact components → static HTML** (`render(<Template {...data} />) → string`); a static render is the floor, interactivity is opt-in islands (the `serve` **post-back** · the gallery **filter**). Clear of mcp-ui / MCP Apps (the protocol/host lane). Published unscoped as **`planpage`** — one name for the package, the CLI bin, and the import (ADR 0013). Seeded by extracting the `planpage` spike from `dufflebag`, which becomes a thin consumer.
 
 ## Repo layout
 
@@ -12,7 +12,7 @@ Single source of truth for working in **skill-ui**. `CLAUDE.md` / `GEMINI.md` po
 |---|---|
 | `src/components/` | shared primitives (flat), grouped by role — layout (`Shell` · `SectionCard` · `TreePanel` · `Accordion`) · notes (`Callout` · `RiskList`) · sequence (`StatusChip` · `Steps` · `Timeline`) · brainstorm (`PickBlock` · `OptionCompare`) · metrics (`PlanSummary`) · code (`DiffBlock` · `CodeBlock` · `AnnotatedCode`) · diagram (`Flow`) · `SubmitBar` |
 | `src/templates/<Name>/` | pages (folder-per-template: component + test + README) — `BeforeAfter`, `CodeStylePlan`, `PlanBrief` (flagship agent-plan page), `Library` (auto-captured gallery); registry in `templates/index.tsx` |
-| `src/gallery/` | the living collection — `registry` (SSOT) · `capture` (pure diff) · sync test; powers `Library` + `skill-ui capture` |
+| `src/gallery/` | the living collection — `registry` (SSOT) · `capture` (pure diff) · sync test; powers `Library` + `planpage capture` |
 | `src/render/` | pure engine — `render()`, `Shell` wiring, `raw()`, client scripts (theme toggle · post-back · gallery filter). `Shell` owns the `Theme` type + the animated sun/moon toggle |
 | `src/server/` | opt-in post-back — `serve` (ephemeral port, never-hang), `Decision` |
 | `src/cli/` | dual-mode CLI (commander) — `render` / `serve` / `new` / `library` / `capture` / `init`; bare TTY → `menu` (clack); shared `io` (open/writeTemp) |
@@ -27,12 +27,12 @@ Single source of truth for working in **skill-ui**. `CLAUDE.md` / `GEMINI.md` po
 - **Components + `render()`** — Preact, arrow-const, named exports, PascalCase files, exported `readonly XProps`.
 - **Escaping is default** — JSX auto-escapes; raw HTML only via `raw()`; `dangerouslySetInnerHTML` allowed only in `Shell` for constant infra.
 - **Client islands live in the Shell** — constant scripts from `render/clientScript.ts`, each gated by a Shell flag (`interactive` → post-back · `filterable` → gallery filter). Never inline a `<script>` in a template.
-- **Agent on-ramp** — `skill-ui init` scaffolds a consumer skill (`render-plan`) wired to `npx @yosefsabag/skill-ui`; the interactive menu is `@clack/prompts` and every branch calls the same command fn.
+- **Agent on-ramp** — `planpage init` scaffolds a consumer skill (`render-plan`) wired to `npx planpage`; the interactive menu is `@clack/prompts` and every branch calls the same command fn.
 - **Validate at the boundary** — public templates assert required props → actionable throw.
 - **Errors by layer** — render throws · server exit codes (0/2/3, never-hang) · CLI top-catch.
 - **Naming** — Comp `PascalCase` · props `XProps` · fns `camelCase` · consts `SCREAMING_SNAKE` · ids/flags `kebab-case`.
 - **Tests** — vitest, snapshot/assertion-first, co-located.
-- **Gallery is captured** — every `src/components/*.tsx` (bar `Shell`/`SubmitBar`) has a `GALLERY` entry in `src/gallery/registry.tsx`; the `gallery-sync` test fails on drift (`skill-ui capture` stubs the rest).
+- **Gallery is captured** — every `src/components/*.tsx` (bar `Shell`/`SubmitBar`) has a `GALLERY` entry in `src/gallery/registry.tsx`; the `gallery-sync` test fails on drift (`planpage capture` stubs the rest).
 - **Never** — micro-helpers (`isRecord`…), nested ternaries, generic names (`handleData`…), default exports, restyling the shell.
 - **biome** is the one gate. **Reuse before create.** SSOT / KISS / YAGNI / DRY.
 
@@ -47,7 +47,7 @@ npm run cli -- init             # scaffold a ready skill into .claude/skills (ag
 npm test           # vitest
 npm run lint:fix   # biome check --write
 npm run build      # tsc -p tsconfig.build.json → dist/
-# publish: npm publish  (scoped + public via publishConfig — ADR 0012)
+# publish: npm publish  (unscoped, public by default — ADR 0013)
 ```
 
 ## Validate changes

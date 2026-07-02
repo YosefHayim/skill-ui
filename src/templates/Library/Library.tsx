@@ -22,7 +22,7 @@ export interface LibraryProps {
  * registry directly, so a new component appears the moment it is registered. The filter is an
  * opt-in island (Shell `filterable`); with no script the page is still a clean static gallery.
  */
-export const Library = ({ title = "skill-ui — component gallery" }: LibraryProps) => {
+export const Library = ({ title = "planpage — component gallery" }: LibraryProps) => {
   const groups = groupByCategory();
   return (
     <div class="lg:flex lg:gap-8">
@@ -122,9 +122,9 @@ function EntryCard({ name }: { readonly name: GalleryName }) {
   return (
     <div
       data-card={`${name} ${entry.blurb}`.toLowerCase()}
-      class="rounded-xl border border-slate-200 transition-shadow hover:shadow-md dark:border-slate-800"
+      class="overflow-hidden rounded-xl border border-slate-200 transition-shadow hover:shadow-md dark:border-slate-800"
     >
-      <div class="grid min-h-28 place-items-center border-slate-100 border-b bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/40">
+      <div class="grid min-h-28 place-items-center overflow-x-auto border-slate-100 border-b bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/40">
         {entry.sample()}
       </div>
       <div class="p-4">
@@ -145,16 +145,18 @@ function EntryCard({ name }: { readonly name: GalleryName }) {
 function PropsTable({ props }: { readonly props: ReadonlyArray<PropDoc> }) {
   if (props.length === 0) return null;
   return (
-    <table class="mt-3 w-full text-left text-xs">
-      <tbody>
-        {props.map((prop) => (
-          <tr key={prop.name} class="border-slate-100 border-t dark:border-slate-800">
-            <td class="py-1 pr-3 font-mono text-slate-700 dark:text-slate-200">{prop.name}</td>
-            <td class="py-1 pr-3 font-mono text-slate-400">{prop.type}</td>
-            <td class="py-1 text-slate-400">{prop.required ? "required" : "—"}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div class="mt-3 overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <tbody>
+          {props.map((prop) => (
+            <tr key={prop.name} class="border-slate-100 border-t dark:border-slate-800">
+              <td class="py-1 pr-3 font-mono text-slate-700 dark:text-slate-200">{prop.name}</td>
+              <td class="py-1 pr-3 font-mono text-slate-400">{prop.type}</td>
+              <td class="py-1 text-slate-400">{prop.required ? "required" : "—"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

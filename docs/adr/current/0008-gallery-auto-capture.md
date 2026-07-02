@@ -13,7 +13,7 @@ The "library-ui" wants to show *everything* in the collection, captured automati
 - `src/gallery/registry.tsx` — the `GALLERY` object is the SSOT: one entry per showcase component with `blurb` · `usage` · `props` · a live `sample()`. Hand-annotated, because blurbs and good samples are editorial.
 - `src/gallery/capture.ts` — **pure** logic: `componentNames(files)` and `diffRegistry(onDisk, registered)`. No I/O.
 - `src/gallery/registry.test.ts` — the **enforced** guarantee: reads `src/components/`, and fails if the registry has drifted (`gallery-sync`).
-- `skill-ui capture` (the CLI edge) — reads the dir, runs the pure diff, and prints a paste-ready stub for any missing component.
+- `planpage capture` (the CLI edge) — reads the dir, runs the pure diff, and prints a paste-ready stub for any missing component.
 
 Infra components (`Shell`, `SubmitBar`) are excluded via a small `DENY` list — they are page scaffolding, not showcase items.
 

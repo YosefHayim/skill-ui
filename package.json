@@ -1,15 +1,12 @@
 {
-  "name": "@yosefsabag/skill-ui",
+  "name": "planpage",
   "version": "0.1.0",
   "description": "Render a skill's plan, gate, or report as a beautiful, self-contained local HTML page — Preact components rendered to static HTML, with an opt-in post-back server.",
   "keywords": ["skill", "claude", "agent", "html", "report", "preact", "cli"],
   "license": "MIT",
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
   "bin": {
-    "skill-ui": "dist/cli/index.js"
+    "planpage": "dist/cli/index.js"
   },
   "exports": {
     ".": {

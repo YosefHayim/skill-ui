@@ -1,8 +1,8 @@
-# skill-ui — Purpose & Direction
+# planpage — Purpose & Direction
 
 ## The problem
 
-Skills emit planning artifacts — before/after plans, decision galleries, structure diffs — as ephemeral TUI text that's hard to skim, so every skill ends up hand-rolling its own throwaway HTML to escape the wall of text. skill-ui is the reusable kit that renders those artifacts as beautiful, self-contained **local HTML** — solving both readability and the per-skill duplication. It sits deliberately clear of mcp-ui / MCP Apps (SEP-1865), which own interactive-UI-over-the-protocol for hosts; skill-ui renders a local file you open.
+Skills emit planning artifacts — before/after plans, decision galleries, structure diffs — as ephemeral TUI text that's hard to skim, so every skill ends up hand-rolling its own throwaway HTML to escape the wall of text. planpage is the reusable kit that renders those artifacts as beautiful, self-contained **local HTML** — solving both readability and the per-skill duplication. It sits deliberately clear of mcp-ui / MCP Apps (SEP-1865), which own interactive-UI-over-the-protocol for hosts; planpage renders a local file you open.
 
 ## Who it's for
 
@@ -20,7 +20,7 @@ Agents now generate rich plans faster than a human can absorb them from monochro
 - Approval is **opt-in**: static by default; when wanted, the browser posts one decision JSON back and the agent continues — and it never hangs off-TTY.
 - Anyone can **install it** and render the same templates in their own skill/CLI.
 
-**v1 success bar:** the dufflebag grill/deslop skills render their plans through skill-ui, retiring their hand-rolled HTML.
+**v1 success bar:** the dufflebag grill/deslop skills render their plans through planpage, retiring their hand-rolled HTML.
 
 ## Non-goals
 
@@ -34,7 +34,7 @@ Agents now generate rich plans faster than a human can absorb them from monochro
 ## Direction
 
 - **Built:** the render engine, the eight components, the `BeforeAfter` + `CodeStylePlan` templates (with tests), the serve-plan post-back server, and the dual-mode commander CLI (`render` / `serve` / `new`). Extracted and generalized from the dufflebag spike.
-- **Next:** point dufflebag's `skill-ui` skill at this repo as a thin consumer (retire its hand-rolled HTML); publish to npm once the template shapes settle; broaden the gallery (timeline, table, stat, callout).
+- **Next:** point dufflebag's `planpage` skill at this repo as a thin consumer (retire its hand-rolled HTML); publish to npm once the template shapes settle; broaden the gallery (timeline, table, stat, callout).
 - **Maybe:** a docs/showcase site; a contribution guide; consumers beyond dufflebag.
 
 ## Guiding principles

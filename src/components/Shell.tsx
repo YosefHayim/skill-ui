@@ -26,7 +26,7 @@ const MERMAID =
   "import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';mermaid.initialize({startOnLoad:true,theme:document.documentElement.classList.contains('dark')?'dark':'neutral',securityLevel:'loose'});";
 
 const STYLE =
-  ".code{white-space:pre;overflow-x:auto;tab-size:2}.chip{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:600}.mermaid{display:flex;justify-content:center}.pick.flipped .chosen{opacity:.4;filter:grayscale(1)}.pick.flipped .rejected{opacity:1;filter:none;outline:2px solid #34d399}.pick.revisit{outline:2px dashed #fbbf24;outline-offset:4px;border-radius:12px}.theme-ico .sun,.theme-ico .moon{transform-origin:center;transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .35s ease}.theme-ico .moon{opacity:0;transform:rotate(-90deg) scale(.3)}.dark .theme-ico .sun{opacity:0;transform:rotate(90deg) scale(.3)}.dark .theme-ico .moon{opacity:1;transform:none}@media (prefers-reduced-motion:reduce){.theme-ico .sun,.theme-ico .moon{transition:none}}";
+  ".code{white-space:pre;overflow-x:auto;tab-size:2}.chip{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:600}.mermaid{display:flex;justify-content:center}.pick.flipped .chosen{opacity:.4;filter:grayscale(1)}.pick.flipped .rejected{opacity:1;filter:none;outline:2px solid #34d399}.pick.revisit{outline:2px dashed #fbbf24;outline-offset:4px;border-radius:12px}.theme-ico .sun,.theme-ico .moon{transform-origin:center;transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .35s ease}.theme-ico .moon{opacity:0;transform:rotate(-90deg) scale(.3)}.dark .theme-ico .sun{opacity:0;transform:rotate(90deg) scale(.3)}.dark .theme-ico .moon{opacity:1;transform:none}.spin{display:inline-block;animation:sui-spin 1s linear infinite}@keyframes sui-spin{to{transform:rotate(360deg)}}@media (prefers-reduced-motion:reduce){.theme-ico .sun,.theme-ico .moon{transition:none}.spin{animation:none}}";
 
 /**
  * The fixed page skeleton every rendered document nests inside: Tailwind + Mermaid from
@@ -34,7 +34,7 @@ const STYLE =
  * content and never restyle this shell — a fixed shell is what makes every report look alike.
  */
 export const Shell = ({
-  title = "skill-ui",
+  title = "planpage",
   subtitle,
   theme = "auto",
   interactive = false,
@@ -58,7 +58,7 @@ export const Shell = ({
       <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/80 px-6 py-4 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80">
         <div class="mx-auto flex max-w-5xl items-center gap-3">
           <span class="grid h-6 w-6 place-items-center rounded-md bg-indigo-600 text-[11px] font-bold text-white">
-            UI
+            PP
           </span>
           <div>
             <h1 class="text-sm font-semibold text-slate-900 dark:text-white">{title}</h1>

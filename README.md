@@ -1,4 +1,4 @@
-# skill-ui
+# planpage
 
 Render a skill's plan, review-gate, or report as a beautiful, self-contained **local HTML** page — Preact components → static HTML, with an opt-in post-back server so the browser can hand a decision back to your agent. Like mcp-ui, but for local terminal skills.
 
@@ -7,15 +7,15 @@ Reader-first: the design center is the developer *reading* the plan.
 ## Install
 
 ```bash
-npm install @yosefsabag/skill-ui
+npm install planpage
 ```
 
-Published scoped — npm blocks the bare `skill-ui` as too similar to an existing package. The CLI command is still `skill-ui`, and `npx @yosefsabag/skill-ui` works with no install.
+One name everywhere: the package, the `planpage` CLI command, and `import … from "planpage"`. `npx planpage` runs it with no install.
 
 ## Use (library)
 
 ```tsx
-import { render, BeforeAfter } from "@yosefsabag/skill-ui";
+import { render, BeforeAfter } from "planpage";
 
 const html = render(
   <BeforeAfter
@@ -29,33 +29,33 @@ const html = render(
 ## Use (CLI)
 
 ```bash
-skill-ui render before-after --sample --open                                 # preview from sample data
-skill-ui render code-style-plan --data plan.json --serve --decision out.json # interactive gate
-skill-ui new my-template                                                      # scaffold a template
-skill-ui library --open                                                       # the living component gallery
-skill-ui capture                                                              # check the gallery is in sync
-skill-ui init                                                                 # add a ready skill to .claude/skills
-skill-ui                                                                      # (in a TTY) interactive menu
+planpage render before-after --sample --open                                 # preview from sample data
+planpage render code-style-plan --data plan.json --serve --decision out.json # interactive gate
+planpage new my-template                                                      # scaffold a template
+planpage library --open                                                       # the living component gallery
+planpage capture                                                              # check the gallery is in sync
+planpage init                                                                 # add a ready skill to .claude/skills
+planpage                                                                      # (in a TTY) interactive menu
 ```
 
-Data goes in as JSON via `--data <file>` or piped stdin; `skill-ui render <template> --help` prints the shape.
+Data goes in as JSON via `--data <file>` or piped stdin; `planpage render <template> --help` prints the shape.
 
 ## Use it in your agent
 
-skill-ui is a package + CLI — **not itself a skill**. To make *your* agent render its plans through it:
+planpage is a package + CLI — **not itself a skill**. To make *your* agent render its plans through it:
 
-1. **Install** — `npm i -D @yosefsabag/skill-ui` (or zero-install with `npx @yosefsabag/skill-ui`).
-2. **Scaffold the skill** — `npx @yosefsabag/skill-ui init` drops a ready `render-plan` skill into `.claude/skills/` (`--global` for `~/.claude/skills`). It's wired to render + serve the plan and read the decision back.
+1. **Install** — `npm i -D planpage` (or zero-install with `npx planpage`).
+2. **Scaffold the skill** — `npx planpage init` drops a ready `render-plan` skill into `.claude/skills/` (`--global` for `~/.claude/skills`). It's wired to render + serve the plan and read the decision back.
 3. **Ship it** — bundle that skill with your agent (or your own skills installer). End users install the *skill*; it depends on this package underneath.
 
-The layers: **install the package → `init` a skill that calls it → ship that skill**. The generated skill is the injection point; skill-ui stays the engine.
+The layers: **install the package → `init` a skill that calls it → ship that skill**. The generated skill is the injection point; planpage stays the engine.
 
 ## Templates
 
 - **plan-brief** — a whole agent plan on one page: summary · notes · steps · options · risks · annotated code (the flagship).
 - **before-after** — green/red before→after diffs (the workhorse report).
 - **code-style-plan** — the pick-the-code gallery + canonical example + CLI flow (interactive gate).
-- **library** — the living, auto-captured component gallery (`skill-ui library`).
+- **library** — the living, auto-captured component gallery (`planpage library`).
 
 ## Components
 
@@ -68,7 +68,7 @@ Plan-native, reader-first pieces you compose into a page:
 - **Code** — `CodeBlock`, `DiffBlock`, `AnnotatedCode` (inline rationale).
 - **Layout** — `SectionCard`, `Accordion`, `TreePanel`, `Flow` (Mermaid).
 
-Every component is showcased live in a searchable gallery (sticky category rail + type-to-filter) — run `skill-ui library --open`.
+Every component is showcased live in a searchable gallery (sticky category rail + type-to-filter) — run `planpage library --open`.
 
 ## How it works
 

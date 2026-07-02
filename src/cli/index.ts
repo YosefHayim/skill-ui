@@ -11,7 +11,7 @@ import { serveCommand } from "./serve";
 
 const program = new Command();
 program
-  .name("skill-ui")
+  .name("planpage")
   .description("Render a skill's plan, gate, or report as beautiful, self-contained local HTML.")
   .version("0.1.0");
 
@@ -44,7 +44,7 @@ program
 
 program
   .command("init")
-  .description("scaffold a ready-to-use Claude skill wired to skill-ui")
+  .description("scaffold a ready-to-use Claude skill wired to planpage")
   .option("--global", "install into ~/.claude/skills")
   .option("--dir <path>", "install into a custom skills directory")
   .option("--force", "overwrite an existing skill")
@@ -74,6 +74,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((error: unknown) => {
-  process.stderr.write(`skill-ui: ${error instanceof Error ? error.message : String(error)}\n`);
+  process.stderr.write(`planpage: ${error instanceof Error ? error.message : String(error)}\n`);
   process.exit(1);
 });

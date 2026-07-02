@@ -8,7 +8,7 @@ export interface CaptureCommandOptions {
 }
 
 /**
- * `skill-ui capture` — report components in src/components that are missing from the gallery
+ * `planpage capture` — report components in src/components that are missing from the gallery
  * registry (and stale entries that are registered but gone). A dev tool: run from source, where
  * the .tsx files exist. The gallery-sync test is the enforced guarantee; this is the fast local check.
  */
@@ -19,14 +19,14 @@ export const captureCommand = (options: CaptureCommandOptions): void => {
   const diff = diffRegistry(onDisk, Object.keys(GALLERY));
 
   if (diff.missing.length === 0 && diff.extra.length === 0) {
-    process.stdout.write("skill-ui: gallery is in sync ✓\n");
+    process.stdout.write("planpage: gallery is in sync ✓\n");
     return;
   }
   for (const name of diff.missing) {
     process.stdout.write(stub(name));
   }
   if (diff.extra.length > 0) {
-    process.stdout.write(`skill-ui: registered but not on disk: ${diff.extra.join(", ")}\n`);
+    process.stdout.write(`planpage: registered but not on disk: ${diff.extra.join(", ")}\n`);
   }
   if (options.check) {
     process.exit(2);

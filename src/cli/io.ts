@@ -5,7 +5,7 @@ import { join } from "node:path";
 
 /** Write HTML to a unique temp file (keyed by pid) and return its path. */
 export const writeTemp = (html: string): string => {
-  const path = join(tmpdir(), `skill-ui-${process.pid}.html`);
+  const path = join(tmpdir(), `planpage-${process.pid}.html`);
   writeFileSync(path, html);
   return path;
 };

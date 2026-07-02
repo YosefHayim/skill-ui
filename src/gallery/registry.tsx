@@ -33,7 +33,7 @@ export interface GalleryEntry {
 
 /**
  * The living collection: one entry per showcase component. This is the hand-annotated SSOT
- * (blurbs/tags/samples). `skill-ui capture` reports anything missing; `registry.test.ts` fails
+ * (blurbs/tags/samples). `planpage capture` reports anything missing; `registry.test.ts` fails
  * on drift, so the gallery is always complete. Keys must equal src/components minus DENY.
  */
 export const GALLERY = {
@@ -203,7 +203,7 @@ export const GALLERY = {
         stats={[
           { label: "Files", value: "17" },
           { label: "Modules", value: "4" },
-          { label: "Risk", value: "low" },
+          { label: "Risk", value: "Low" },
           { label: "Confidence", value: "90%" },
         ]}
       />

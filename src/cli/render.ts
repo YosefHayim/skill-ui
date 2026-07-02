@@ -17,7 +17,7 @@ export interface RenderCommandOptions {
   readonly theme?: Theme;
 }
 
-/** `skill-ui render <template>` — data → HTML, then write / open / serve per the flags. */
+/** `planpage render <template>` — data → HTML, then write / open / serve per the flags. */
 export const renderCommand = async (
   template: string,
   options: RenderCommandOptions,
@@ -34,13 +34,13 @@ export const renderCommand = async (
   });
 
   if (options.serve) {
-    const outPath = options.decision ?? join(tmpdir(), "skill-ui-decision.json");
+    const outPath = options.decision ?? join(tmpdir(), "planpage-decision.json");
     const code = await serve({ htmlPath: writeTemp(html), outPath });
     process.exit(code);
   }
   if (options.out) {
     writeFileSync(options.out, html);
-    process.stdout.write(`skill-ui: wrote ${options.out}\n`);
+    process.stdout.write(`planpage: wrote ${options.out}\n`);
     if (options.open) openPath(options.out);
     return;
   }

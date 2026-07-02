@@ -10,8 +10,8 @@ The kit grew to ~15 components. Readers (and the skill authors wiring them) need
 
 Two commands, both routed through the same `render()`/registry the rest of the CLI uses:
 
-- **`skill-ui library`** — renders the `Library` template (the auto-captured gallery) to a self-contained page (`--out`, `--open`, `--theme`). `Library` is also registered as a template, so it appears in the bare-TTY menu and `render library` works too.
-- **`skill-ui capture`** — a dev tool that reads `src/components/`, diffs it against the `GALLERY` registry, and prints a paste-ready stub for anything missing (`--check` exits non-zero for CI). It runs from source (where the `.tsx` files live); the enforced guarantee is the `gallery-sync` test.
+- **`planpage library`** — renders the `Library` template (the auto-captured gallery) to a self-contained page (`--out`, `--open`, `--theme`). `Library` is also registered as a template, so it appears in the bare-TTY menu and `render library` works too.
+- **`planpage capture`** — a dev tool that reads `src/components/`, diffs it against the `GALLERY` registry, and prints a paste-ready stub for anything missing (`--check` exits non-zero for CI). It runs from source (where the `.tsx` files live); the enforced guarantee is the `gallery-sync` test.
 
 The shared `openPath`/`writeTemp` effect helpers moved to `src/cli/io.ts` on `library` becoming their second consumer (reuse-before-create).
 

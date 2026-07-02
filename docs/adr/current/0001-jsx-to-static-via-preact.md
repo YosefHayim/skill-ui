@@ -4,7 +4,7 @@
 
 ## Context
 
-skill-ui renders planning artifacts to a self-contained HTML file the reader opens. The look is identical whether templates are authored as vanilla string functions, JSX-to-static, or a full client React app — the fork is authoring DX and runtime weight. Consumers are skills an agent runs; the reader wants zero-install.
+planpage renders planning artifacts to a self-contained HTML file the reader opens. The look is identical whether templates are authored as vanilla string functions, JSX-to-static, or a full client React app — the fork is authoring DX and runtime weight. Consumers are skills an agent runs; the reader wants zero-install.
 
 ## Decision
 

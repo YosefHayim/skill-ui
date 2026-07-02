@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-/** `skill-ui new <name>` — scaffold a template folder (component + test + README) per the recipe. */
+/** `planpage new <name>` — scaffold a template folder (component + test + README) per the recipe. */
 export const newCommand = (name: string): void => {
   const pascal = toPascal(name);
   const dir = join("src", "templates", pascal);
@@ -13,7 +13,7 @@ export const newCommand = (name: string): void => {
     `# ${pascal}\n\nWhat it renders + an example \`data.json\`.\n`,
   );
   process.stdout.write(
-    `skill-ui: scaffolded src/templates/${pascal}/ — register it in src/templates/index.ts\n`,
+    `planpage: scaffolded src/templates/${pascal}/ — register it in src/templates/index.ts\n`,
   );
 };
 

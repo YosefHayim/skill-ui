@@ -1,4 +1,4 @@
-# skill-ui — Language
+# planpage — Language
 
 The shared vocabulary. Names only; use these exact terms in code, docs, and commits.
 

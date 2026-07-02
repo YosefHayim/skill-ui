@@ -3,7 +3,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 /** The published package specifier the scaffolded skill shells out to. */
-const PKG = "@yosefsabag/skill-ui";
+const PKG = "planpage";
 const SKILL_DIR = "render-plan";
 
 export interface InitCommandOptions {
@@ -13,8 +13,8 @@ export interface InitCommandOptions {
 }
 
 /**
- * `skill-ui init` — scaffold a ready-to-use Claude skill that renders an agent's plan gate through
- * skill-ui. Writes into `.claude/skills/` (or `~/.claude/skills` with --global). This is the
+ * `planpage init` — scaffold a ready-to-use Claude skill that renders an agent's plan gate through
+ * planpage. Writes into `.claude/skills/` (or `~/.claude/skills` with --global). This is the
  * on-ramp: one command and a developer's agent renders every plan through the kit. Never clobbers.
  */
 export const initCommand = (options: InitCommandOptions): void => {
@@ -22,13 +22,13 @@ export const initCommand = (options: InitCommandOptions): void => {
   const dir = join(base, SKILL_DIR);
   const file = join(dir, "SKILL.md");
   if (existsSync(file) && !options.force) {
-    process.stdout.write(`skill-ui: ${file} already exists — pass --force to overwrite\n`);
+    process.stdout.write(`planpage: ${file} already exists — pass --force to overwrite\n`);
     return;
   }
   mkdirSync(dir, { recursive: true });
   writeFileSync(file, skillDoc());
   process.stdout.write(
-    `skill-ui: scaffolded ${file}\n  → install the kit:  npm i -D ${PKG}\n  → your agent now renders its plan gate through skill-ui.\n`,
+    `planpage: scaffolded ${file}\n  → install the kit:  npm i -D ${PKG}\n  → your agent now renders its plan gate through planpage.\n`,
   );
 };
 

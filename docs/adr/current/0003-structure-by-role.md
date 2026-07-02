@@ -4,7 +4,7 @@
 
 ## Context
 
-skill-ui is a render library where templates compose shared components, plus an effectful server and CLI. A vertical-per-template layout would fight the heavy component sharing; a flat `src/` won't scale to "many templates."
+planpage is a render library where templates compose shared components, plus an effectful server and CLI. A vertical-per-template layout would fight the heavy component sharing; a flat `src/` won't scale to "many templates."
 
 ## Decision
 

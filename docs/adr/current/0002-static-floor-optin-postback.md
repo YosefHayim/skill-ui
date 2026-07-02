@@ -4,7 +4,7 @@
 
 ## Context
 
-mcp-ui / MCP Apps (SEP-1865) own interactive-UI-over-the-protocol for hosts. skill-ui is a different animal: a local HTML file, where the actual choosing often already happens in the TUI. But some skills genuinely want an approve/adjust/flip decision back from the browser.
+mcp-ui / MCP Apps (SEP-1865) own interactive-UI-over-the-protocol for hosts. planpage is a different animal: a local HTML file, where the actual choosing often already happens in the TUI. But some skills genuinely want an approve/adjust/flip decision back from the browser.
 
 ## Decision
 

@@ -50,13 +50,13 @@ export const serve = ({
     server.listen(port, "127.0.0.1", () => {
       const address = server.address() as AddressInfo;
       const url = `http://127.0.0.1:${address.port}/`;
-      process.stdout.write(`skill-ui: serving ${url}\n`);
-      process.stdout.write("skill-ui: waiting for your decision (Approve / Adjust)…\n");
+      process.stdout.write(`planpage: serving ${url}\n`);
+      process.stdout.write("planpage: waiting for your decision (Approve / Adjust)…\n");
       openBrowser(url);
     });
 
     const idle = setTimeout(() => {
-      process.stderr.write("skill-ui: timed out waiting for a decision\n");
+      process.stderr.write("planpage: timed out waiting for a decision\n");
       server.close(() => resolve(3));
     }, timeoutSec * 1000);
     idle.unref();
@@ -70,7 +70,7 @@ function collectDecision(req: IncomingMessage, onDone: () => void, outPath: stri
   });
   req.on("end", () => {
     writeFileSync(outPath, body || "{}");
-    process.stdout.write(`skill-ui: decision written to ${outPath}\n`);
+    process.stdout.write(`planpage: decision written to ${outPath}\n`);
     onDone();
   });
 }
@@ -85,6 +85,6 @@ function openBrowser(url: string): void {
       shell: process.platform === "win32",
     }).unref();
   } catch {
-    process.stdout.write(`skill-ui: open manually → ${url}\n`);
+    process.stdout.write(`planpage: open manually → ${url}\n`);
   }
 }

@@ -37,8 +37,8 @@ The flagship template — a whole **agent plan on one readable page**: a blast-r
 ## Render
 
 ```tsx
-import { render, PlanBrief } from "skill-ui";
+import { render, PlanBrief } from "planpage";
 const html = render(<PlanBrief {...plan} />);
 ```
 
-From the CLI: `skill-ui render plan-brief --data plan.json --open` (try `--sample`).
+From the CLI: `planpage render plan-brief --data plan.json --open` (try `--sample`).

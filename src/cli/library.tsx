@@ -12,16 +12,16 @@ export interface LibraryCommandOptions {
   readonly theme?: Theme;
 }
 
-/** `skill-ui library` — render the auto-captured component gallery to a self-contained page. */
+/** `planpage library` — render the auto-captured component gallery to a self-contained page. */
 export const libraryCommand = (options: LibraryCommandOptions): void => {
   const html = render(<Library />, {
-    title: "skill-ui — component gallery",
+    title: "planpage — component gallery",
     subtitle: "the living, auto-captured collection",
     theme: options.theme,
     filterable: true,
   });
-  const out = options.out ?? join(tmpdir(), "skill-ui-gallery.html");
+  const out = options.out ?? join(tmpdir(), "planpage-gallery.html");
   writeFileSync(out, html);
-  process.stdout.write(`skill-ui: wrote ${out}\n`);
+  process.stdout.write(`planpage: wrote ${out}\n`);
   if (options.open) openPath(out);
 };

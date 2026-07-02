@@ -19,8 +19,8 @@ A titled section of green/red before→after diffs — the workhorse report for 
 ## Render
 
 ```tsx
-import { render, BeforeAfter } from "skill-ui";
+import { render, BeforeAfter } from "planpage";
 const html = render(<BeforeAfter title="Deslop pass" diffs={diffs} />);
 ```
 
-Or from the CLI: `skill-ui render before-after --data diffs.json --open` (try `--sample`).
+Or from the CLI: `planpage render before-after --data diffs.json --open` (try `--sample`).
