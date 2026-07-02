@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+import { Command } from "commander";
+import { TEMPLATES } from "../templates";
+import { runMenu } from "./menu";
+import { newCommand } from "./new";
+import { renderCommand } from "./render";
+import { serveCommand } from "./serve";
+
+const program = new Command();
+program
+  .name("skill-ui")
+  .description("Render a skill's plan, gate, or report as beautiful, self-contained local HTML.")
+  .version("0.1.0");
+
+program
+  .command("render")
+  .description("render a template to HTML (data in via --data or piped stdin)")
+  .argument("<template>", `template to render (${Object.keys(TEMPLATES).join(" | ")})`)
+  .option("--data <file>", "JSON data file; or pipe JSON via stdin")
+  .option("--sample", "use the template's built-in sample data")
+  .option("--out <file>", "write the HTML to this path")
+  .option("--open", "open the rendered HTML in the browser")
+  .option("--serve", "serve the HTML and collect one decision (post-back)")
+  .option("--decision <file>", "where to write the decision JSON (with --serve)")
+  .option("--theme <theme>", "auto | light | dark", "auto")
+  .action(renderCommand);
+
+program
+  .command("serve")
+  .description("serve an existing HTML file and collect one decision")
+  .argument("<html>", "path to an HTML file to serve")
+  .argument("<out>", "path to write the decision JSON")
+  .option("--timeout <sec>", "idle timeout in seconds", "600")
+  .action(serveCommand);
+
+program
+  .command("new")
+  .description("scaffold a new template folder")
+  .argument("<name>", "kebab-case template name")
+  .action(newCommand);
+
+async function main(): Promise<void> {
+  const hasArgs = process.argv.length > 2;
+  if (!hasArgs && process.stdout.isTTY) {
+    await runMenu();
+    return;
+  }
+  await program.parseAsync(process.argv);
+}
+
+main().catch((error: unknown) => {
+  process.stderr.write(`skill-ui: ${error instanceof Error ? error.message : String(error)}\n`);
+  process.exit(1);
+});
