@@ -1,0 +1,32 @@
+name: Typecheck
+
+# Single-purpose, reusable (workflow_call): tsc --noEmit across all four projects
+# (root/cli, scan, web, widget). Type results are deterministic across OS/Node, so
+# this runs single-leg (ubuntu, one Node) — no matrix.
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  typecheck:
+    name: Type check
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck

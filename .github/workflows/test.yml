@@ -1,0 +1,32 @@
+name: Test
+
+# Single-purpose, reusable (workflow_call): the unified vitest suite (workerd D1
+# route handlers + node/effect domain tests) via `alg test`. alg targets Node 24+
+# (uses `node:sqlite`), so this pins Node 24 rather than a legacy matrix.
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ubuntu / node 24
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
