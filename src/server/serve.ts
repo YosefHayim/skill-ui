@@ -1,17 +1,14 @@
 import { spawn } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { type IncomingMessage, createServer } from "node:http";
-import type { AddressInfo, Server } from "node:net";
-
-/** Maximum retries when a fixed port is busy before falling back to OS-assigned. */
-const PORT_RETRIES = 10;
+import type { AddressInfo } from "node:net";
 
 export interface ServeOptions {
   readonly htmlPath: string;
   readonly outPath: string;
   /** Idle timeout before giving up on a decision. Default 600s. */
   readonly timeoutSec?: number;
-  /** Preferred port. If busy, retries up to 10 consecutive ports, then falls back to OS-assigned. Default 0 = ephemeral. */
+  /** Preferred port. If busy, automatically picks an available one. Default: auto. */
   readonly port?: number;
 }
 
@@ -20,8 +17,8 @@ export interface ServeOptions {
  * decision (or the idle timeout fires). Writes the decision JSON verbatim and resolves an
  * exit code: 0 = decision written · 2 = server/IO error · 3 = timeout. Never hangs a caller.
  *
- * If a specific port is requested but busy, automatically tries the next consecutive ports
- * (up to 10 attempts) before falling back to an OS-assigned ephemeral port.
+ * Port handling: if a preferred port is given but busy, falls back to an OS-assigned
+ * available port automatically — no manual retries, no collision.
  *
  * @returns the process exit code to use
  */
@@ -52,12 +49,7 @@ export const serve = ({
       res.end(html);
     });
 
-    listenWithRetry(server, port, (listenError) => {
-      if (listenError) {
-        process.stderr.write(`planpage: could not bind to any port — ${listenError.message}\n`);
-        resolve(2);
-        return;
-      }
+    const onListening = (): void => {
       const address = server.address() as AddressInfo;
       const url = `http://127.0.0.1:${address.port}/`;
       if (port !== 0 && address.port !== port) {
@@ -66,7 +58,22 @@ export const serve = ({
       process.stdout.write(`planpage: serving ${url}\n`);
       process.stdout.write("planpage: waiting for your decision (Approve / Adjust)…\n");
       openBrowser(url);
-    });
+    };
+
+    const tryListen = (p: number): void => {
+      server.once("error", (err: NodeJS.ErrnoException) => {
+        if (err.code === "EADDRINUSE" && p !== 0) {
+          // Preferred port busy — let OS pick any available one
+          server.once("error", () => resolve(2));
+          server.listen(0, "127.0.0.1", onListening);
+        } else {
+          resolve(2);
+        }
+      });
+      server.listen(p, "127.0.0.1", onListening);
+    };
+
+    tryListen(port);
 
     const idle = setTimeout(() => {
       process.stderr.write("planpage: timed out waiting for a decision\n");
@@ -75,45 +82,6 @@ export const serve = ({
     idle.unref();
   });
 };
-
-/**
- * Try to listen on `port`. If it's busy (EADDRINUSE), retry the next consecutive ports
- * up to PORT_RETRIES times, then fall back to 0 (OS-assigned). Calls `cb` on success or
- * final failure.
- */
-function listenWithRetry(server: Server, port: number, cb: (err: Error | null) => void): void {
-  // Port 0 means let the OS pick — no retry needed
-  if (port === 0) {
-    server.once("error", (err) => cb(err));
-    server.listen(0, "127.0.0.1", () => cb(null));
-    return;
-  }
-
-  let attempt = 0;
-  const tryPort = (p: number): void => {
-    const onError = (err: NodeJS.ErrnoException): void => {
-      server.removeListener("error", onError);
-      if (err.code === "EADDRINUSE") {
-        attempt++;
-        if (attempt < PORT_RETRIES) {
-          tryPort(p + 1);
-        } else {
-          // Exhausted retries — fall back to ephemeral
-          server.once("error", (fallbackErr) => cb(fallbackErr));
-          server.listen(0, "127.0.0.1", () => cb(null));
-        }
-      } else {
-        cb(err);
-      }
-    };
-    server.once("error", onError);
-    server.listen(p, "127.0.0.1", () => {
-      server.removeListener("error", onError);
-      cb(null);
-    });
-  };
-  tryPort(port);
-}
 
 function collectDecision(req: IncomingMessage, onDone: () => void, outPath: string): void {
   let body = "";
