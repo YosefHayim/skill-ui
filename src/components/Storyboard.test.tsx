@@ -59,4 +59,35 @@ describe("Storyboard", () => {
       render(<Storyboard dataId="sb.cols" columns={7} frames={[{ src: "a.png" }]} />),
     ).toThrow("columns must be an integer from 1 to 6");
   });
+
+  it("throws when columns is not an integer", () => {
+    expect(() =>
+      render(
+        <Storyboard
+          dataId="sb.frac"
+          columns={3.5 as unknown as number}
+          frames={[{ src: "a.png" }]}
+        />,
+      ),
+    ).toThrow("columns must be an integer from 1 to 6");
+  });
+
+  it("uses caption as alt by default, or explicit alt / Frame N", () => {
+    const html = render(
+      <Storyboard
+        dataId="sb.alt"
+        frames={[
+          { src: "a.png", caption: "Cold open" },
+          { src: "b.png", alt: "Custom alt" },
+          { src: "c.png", alt: "" },
+          { src: "d.png" },
+        ]}
+      />,
+    );
+    expect(html).toContain('alt="Cold open"');
+    expect(html).toContain('alt="Custom alt"');
+    // Preact omits `=""` for empty string attrs — decorative frames render as bare `alt`
+    expect(html).toMatch(/src="c\.png" alt(?:=""|[\s>])/);
+    expect(html).toContain('alt="Frame 4"');
+  });
 });

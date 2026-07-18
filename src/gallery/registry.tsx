@@ -408,12 +408,12 @@ export const GALLERY = {
   Storyboard: {
     category: "layout",
     blurb:
-      "A responsive image grid — keyframes, screenshot sets, design variations. columns reflows down.",
+      "A responsive image grid — keyframes, screenshot sets, design variations. Columns reflow down.",
     usage: '<Storyboard dataId="storyboard.x" columns={3} frames={[{ src, caption, index }]} />',
     props: [
       { name: "dataId", type: "string", required: true },
       { name: "columns", type: "number (1–6)" },
-      { name: "frames", type: "{ src; caption?; index? }[]", required: true },
+      { name: "frames", type: "{ src; caption?; alt?; index? }[]", required: true },
     ],
     sample: () => (
       <Storyboard

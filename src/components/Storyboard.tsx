@@ -2,12 +2,17 @@
 export interface StoryboardFrame {
   readonly src: string;
   readonly caption?: string;
+  /**
+   * Accessible text for the image. Defaults to `caption`, then `"Frame N"`.
+   * Pass `""` when the frame is decorative (caption alone carries meaning).
+   */
+  readonly alt?: string;
   /** Display index (defaults to 1-based position in `frames`). */
   readonly index?: number;
 }
 
 export interface StoryboardProps {
-  /** Stable id (e.g. "storyboard.trailer-keyframes") — participates in decision post-back. */
+  /** Stable id (e.g. "storyboard.trailer-keyframes") for targeting the board in the page. */
   readonly dataId: string;
   /**
    * Column count on wide viewports (1–6). Default 3. The grid reflows down on narrower
@@ -35,8 +40,10 @@ const COLUMN_CLASS: Record<number, string> = {
 export const Storyboard = ({ dataId, columns = 3, frames }: StoryboardProps) => {
   if (!dataId) throw new Error("Storyboard: dataId is required");
   if (frames.length === 0) throw new Error("Storyboard: frames[] is required and non-empty");
+  if (!Number.isInteger(columns) || columns < 1 || columns > 6) {
+    throw new Error("Storyboard: columns must be an integer from 1 to 6");
+  }
   const gridClass = COLUMN_CLASS[columns];
-  if (!gridClass) throw new Error("Storyboard: columns must be an integer from 1 to 6");
 
   return (
     <div
@@ -47,6 +54,7 @@ export const Storyboard = ({ dataId, columns = 3, frames }: StoryboardProps) => 
     >
       {frames.map((frame, i) => {
         const n = frame.index ?? i + 1;
+        const alt = frame.alt ?? frame.caption ?? `Frame ${n}`;
         return (
           <figure
             key={`${frame.src}-${n}`}
@@ -57,7 +65,7 @@ export const Storyboard = ({ dataId, columns = 3, frames }: StoryboardProps) => 
             <div class="relative aspect-video bg-slate-100 dark:bg-slate-800">
               <img
                 src={frame.src}
-                alt={frame.caption ?? `Frame ${n}`}
+                alt={alt}
                 class="absolute inset-0 h-full w-full object-cover"
                 loading="lazy"
               />
