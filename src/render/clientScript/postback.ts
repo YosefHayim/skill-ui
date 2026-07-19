@@ -1,0 +1,40 @@
+// Client-side island script inlined into the rendered document.
+// Constant infra (never skill data), injected by the Shell. Tiny, dependency-free.
+
+/**
+ * Opt-in (interactive plans only): collects the decision from the DOM and posts it to
+ * the local serve-plan server; falls back to clipboard when no server is present, so a
+ * non-TTY / headless caller always has a path. Wired via click delegation on [data-action].
+ */
+export const CLIENT_SCRIPT = `(function(){
+  function collect(approved){
+    var flips=[],revisit=[];
+    document.querySelectorAll('[data-pick]').forEach(function(el){
+      if(el.getAttribute('data-flipped')==='true')flips.push(el.getAttribute('data-id'));
+      if(el.getAttribute('data-revisit')==='true')revisit.push(el.getAttribute('data-id'));
+    });
+    var n=document.getElementById('pp-notes');
+    return {approved:approved,flips:flips,revisit:revisit,notes:n?n.value:''};
+  }
+  function done(msg){var b=document.getElementById('pp-bar');if(b)b.innerHTML='<div class="mx-auto max-w-5xl font-semibold text-emerald-500 py-1">'+msg+'</div>';}
+  async function copy(msg){
+    var token=btoa(unescape(encodeURIComponent(JSON.stringify(collect(true)))));
+    try{await navigator.clipboard.writeText(token);done(msg||'Copied — paste back in your terminal.');}
+    catch(_){var p=document.getElementById('pp-token');if(p){p.textContent=token;p.classList.remove('hidden');}}
+  }
+  async function submit(approved){
+    try{var r=await fetch('/decision',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(collect(approved))});if(!r.ok)throw 0;done('Sent — close this tab and return to your terminal.');}
+    catch(_){copy('No server — copied, paste it back in your terminal.');}
+  }
+  function q(id){return document.querySelector('[data-id="'+CSS.escape(id)+'"]');}
+  function toggle(id,attr,cls){var el=q(id);if(!el)return;var v=el.getAttribute(attr)==='true';el.setAttribute(attr,String(!v));el.classList.toggle(cls,!v);}
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('[data-action]');if(!b)return;
+    var a=b.getAttribute('data-action'),id=b.getAttribute('data-target');
+    if(a==='flip')toggle(id,'data-flipped','flipped');
+    else if(a==='revisit')toggle(id,'data-revisit','revisit');
+    else if(a==='approve')submit(true);
+    else if(a==='adjust')submit(false);
+    else if(a==='copy')copy();
+  });
+})();`;

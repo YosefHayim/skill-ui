@@ -20,22 +20,22 @@ Agents now generate rich plans faster than a human can absorb them from monochro
 - Approval is **opt-in**: static by default; when wanted, the browser posts one decision JSON back and the agent continues — and it never hangs off-TTY.
 - Anyone can **install it** and render the same templates in their own skill/CLI.
 
-**v1 success bar:** the dufflebag grill/deslop skills render their plans through planpage, retiring their hand-rolled HTML.
+**v1 success bar:** skills (dufflebag grill/deslop and peers) render their plans through planpage, retiring hand-rolled HTML.
 
 ## Non-goals
 
 - **Not** an MCP/host UI layer (no `ui://` resources, no protocol UI) — that's mcp-ui / MCP Apps.
 - **Not** a general web component library or app-frontend toolkit.
-- **Not** a client-side SPA — static HTML out; the only interactivity is the opt-in post-back island.
+- **Not** a client-side SPA — static HTML out; interactivity is opt-in islands only.
 - **Not** a theming playground — a fixed shell (light + dark only) keeps every report recognizable.
 - **Not** a dashboard/analytics tool — a plan/report/gate, not live data-viz beyond diagrams/flows.
 - **Not** a hosted service — local files + an ephemeral localhost server only.
 
 ## Direction
 
-- **Built:** the render engine, the eight components, the `BeforeAfter` + `CodeStylePlan` templates (with tests), the serve-plan post-back server, and the dual-mode commander CLI (`render` / `serve` / `new`). Extracted and generalized from the dufflebag spike.
-- **Next:** point dufflebag's `planpage` skill at this repo as a thin consumer (retire its hand-rolled HTML); publish to npm once the template shapes settle; broaden the gallery (timeline, table, stat, callout).
-- **Maybe:** a docs/showcase site; a contribution guide; consumers beyond dufflebag.
+- **Built:** pure render engine (Preact → static HTML); ~25 shared components (layout, notes, sequence, brainstorm, teach, metrics, code, diagram); eight templates (`PlanBrief`, `BeforeAfter`, `CodeStylePlan`, `QuestionPoll`, `Quiz`, `Flashcards`, `AuditReport`, `Library`); gallery auto-capture + sync test; Shiki render-time highlight + `CodeExplorer`; dual-mode CLI (`render` / `serve` / `new` / `library` / `capture` / `init`) with clack menu; post-back server (never-hang); agent on-ramps for nine tools; published unscoped as **`planpage`** on npm (ADR 0013).
+- **Next:** keep dufflebag and other skills as thin consumers; broaden consumers beyond the originating grill/deslop skills; polish README / docs site if demand warrants.
+- **Maybe:** a public showcase site; a contribution guide; more teach/coach surfaces.
 
 ## Guiding principles
 

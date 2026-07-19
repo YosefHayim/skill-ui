@@ -29,7 +29,7 @@ export const Library = ({ title = "planpage — component gallery" }: LibraryPro
     <div class="lg:flex lg:gap-8">
       <aside class="mb-6 lg:sticky lg:top-20 lg:mb-0 lg:h-fit lg:w-48 lg:shrink-0">
         <input
-          id="sui-filter"
+          id="pp-filter"
           type="search"
           placeholder="Filter components…"
           class="mb-4 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-700 dark:bg-slate-900"

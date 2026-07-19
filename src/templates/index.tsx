@@ -209,7 +209,7 @@ export const SAMPLES: Record<TemplateName, unknown> = {
         group: "Rendering",
         question: "How does a template add interactivity?",
         explanation:
-          "Interactivity is a constant script from clientScript.ts, injected by the Shell and gated by a boolean flag — never a <script> inside a template.",
+          "Interactivity is a constant script from render/clientScript/, injected by the Shell and gated by a boolean flag — never a <script> inside a template.",
         options: [
           { id: "shell-flag", label: "A constant island gated by a Shell flag", correct: true },
           { id: "inline", label: "An inline <script> in the template" },

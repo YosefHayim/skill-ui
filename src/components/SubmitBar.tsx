@@ -6,12 +6,12 @@ export interface SubmitBarProps {
 /** The sticky Approve / Adjust / Copy bar + notes box. Wired by the client script via [data-action]. */
 export const SubmitBar = ({ approveLabel = "Approve", adjustLabel = "Adjust" }: SubmitBarProps) => (
   <div
-    id="sui-bar"
+    id="pp-bar"
     class="fixed inset-x-0 bottom-0 z-20 border-t border-slate-200 bg-white/90 px-6 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90"
   >
     <div class="mx-auto flex max-w-5xl items-center gap-3">
       <input
-        id="sui-notes"
+        id="pp-notes"
         placeholder="Notes / what to adjust…"
         class="flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-800 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
       />
@@ -38,7 +38,7 @@ export const SubmitBar = ({ approveLabel = "Approve", adjustLabel = "Adjust" }: 
       </button>
     </div>
     <pre
-      id="sui-token"
+      id="pp-token"
       class="mx-auto mt-2 hidden max-w-5xl whitespace-pre-wrap break-all text-amber-500 text-xs"
     />
   </div>

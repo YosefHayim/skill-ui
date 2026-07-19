@@ -3,6 +3,9 @@ dist
 *.log
 .DS_Store
 
+# Local one-off / personal dev scripts (see CODE-STYLE.md)
+scripts/dev/
+
 # Kiro CLI agent config (local)
 .kiro
 

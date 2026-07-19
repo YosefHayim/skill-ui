@@ -32,8 +32,8 @@ npx planpage
 - **Self-contained HTML** — one file, works offline, nothing written to your repo
 - **Post-back server** — opt-in: the page collects an Approve/Adjust decision and returns it as JSON to your agent
 - **9 agent integrations** — one `init` command wires planpage into [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview), [Cursor](https://cursor.com/docs/rules), [Codex](https://developers.openai.com/codex/guides/agents-md), [Windsurf](https://docs.windsurf.com/windsurf/cascade/agents-md), [Kiro](https://kiro.dev/docs/), [Cline](https://docs.cline.bot/customization/cline-rules), [GitHub Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions), [Amazon Q](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/context-project-rules.html), and [Roo Code](https://roocodeinc.github.io/Roo-Code/)
-- **5 templates** — plan-brief (flagship) · before-after diffs · code-style-plan · question-poll (interactive quiz with [Mermaid](https://mermaid.js.org/) diagrams) · library
-- **17 components** — reader-first UI pieces: Callout · RiskList · Steps · Timeline · CodeBlock · DiffBlock · AnnotatedCode · CodeExplorer (IDE-style file tree) · Flow · QuestionCard · and more
+- **8 templates** — plan-brief (flagship) · before-after · code-style-plan · question-poll · quiz · flashcards · audit-report · library
+- **25 components** — reader-first UI pieces: Callout · RiskList · Steps · Timeline · CodeBlock · DiffBlock · AnnotatedCode · CodeExplorer (IDE-style file tree) · Flow · QuestionCard · QuizCard · Flashcard · Scorecard · Storyboard · Carousel · Terminal · and more
 - **Real VS Code syntax colour** — [Shiki](https://shiki.style/) highlights TS/JS (and more) at render time using [VS Code](https://code.visualstudio.com/)'s own themes; colour is baked into the HTML, so it works offline with no client JS
 - **Programmable** — use the CLI, or import `render()` (or `renderHighlighted()`) and compose [Preact](https://preactjs.com/) components directly in [TypeScript](https://www.typescriptlang.org/)
 - **Never hangs** — the post-back server gracefully falls back when there's no TTY
@@ -51,7 +51,7 @@ planpage new my-template                                 # scaffold a new templa
 planpage init                                            # wire planpage into your agents
 ```
 
-Templates: `plan-brief` · `before-after` · `code-style-plan` · `question-poll` · `library`
+Templates: `plan-brief` · `before-after` · `code-style-plan` · `question-poll` · `quiz` · `flashcards` · `audit-report` · `library`
 
 Data flows in as JSON via `--data <file>` or piped stdin. Use `--sample` for built-in sample data.
 

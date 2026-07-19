@@ -15,8 +15,8 @@ Preact render-to-string has no house skill; the conventions below are the SSOT.
 Load-bearing, project-specific rules only. Each: a one-line rule + a **✓ chosen / ✗ rejected** pair + an enforcement tag (`[lint: rule]` if a linter catches it, else `[taste]`).
 
 ### Structure: by role · [taste]
-`src/{components,templates,render,server,cli,contracts}`, public barrel `src/index.ts`. Shared primitives in `components/` (flat files); gallery pages in `templates/<Name>/` (folder-per-template: component + colocated test + README).
-_Why:_ templates compose shared components — role grouping keeps the sharing obvious.
+`src/{components,templates,render,gallery,highlight,server,cli,contracts}`, public barrel `src/index.ts`. Shared primitives in `components/` (flat files); gallery pages in `templates/<Name>/` (folder-per-template: component + colocated test + README). `gallery/` is the living component registry (SSOT + drift test). `highlight/` is the async edge pass (Shiki) — not pure render. Client islands live as one module per island under `render/clientScript/`. Agent `init` writers live one-per-agent under `cli/init/`.
+_Why:_ templates compose shared components — role grouping keeps the sharing obvious; edge steps stay out of the pure path.
 
 ### Pure render, effects at the edges · [taste]
 `components/` · `templates/` · `render/` are pure: data → HTML string, no `fs`/`net`/`process`/`Date`/`Math.random`. All I/O (write file, open browser, serve, read decision) lives in `server/` + `cli/`.
@@ -44,7 +44,7 @@ if (diffs.length === 0) throw new Error("BeforeAfter: diffs[] is required and no
 _Why:_ the caller is usually an agent assembling JSON — junk must fail loud, not render a broken page.
 
 ### Escaping is the default (JSX) · [lint: noDangerouslySetInnerHtml]
-Interpolated `{value}` is auto-escaped by JSX. Raw HTML only through the `raw()` helper — never `dangerouslySetInnerHTML` directly. The one sanctioned exception is `Shell`, which injects its own **constant** `<script>`/`<style>` infra (never skill data) with an explicit `biome-ignore`. Client-side islands follow the same rule: a constant string from `render/clientScript.ts`, injected by `Shell` and gated by a boolean prop (`interactive` → post-back · `filterable` → gallery filter · `explorable` → CodeExplorer file/variant switching · `pollable` → QuestionPoll) — never a `<script>` inside a template. Syntax colour is **not** an island: code components emit a `data-hl` marker (`render/codeMark.tsx`) that the async `highlight()` edge pass bakes into the HTML with Shiki (ADR 0015) — no client JS needed to read colour.
+Interpolated `{value}` is auto-escaped by JSX. Raw HTML only through the `raw()` helper — never `dangerouslySetInnerHTML` directly. The one sanctioned exception is `Shell`, which injects its own **constant** `<script>`/`<style>` infra (never skill data) with an explicit `biome-ignore`. Client-side islands follow the same rule: a constant string from `render/clientScript/` (one file per island, barrel re-export), injected by `Shell` and gated by a boolean prop (`interactive` → post-back · `filterable` → gallery filter · `explorable` → CodeExplorer file/variant switching · `pollable` → QuestionPoll · `quizzable` → Quiz · `carousel` → Carousel) — never a `<script>` inside a template. DOM infra ids use the `pp-` prefix (`pp-bar`, `pp-notes`, `pp-token`, `pp-filter`). Syntax colour is **not** an island: code components emit a `data-hl` marker (`render/codeMark.tsx`) that the async `highlight()` edge pass bakes into the HTML with Shiki (ADR 0015) — no client JS needed to read colour.
 ```tsx
 // ✓ <code>{snippet}</code>              // escaped
 // ✓ {raw(trustedFragment)}             // explicit, reviewed

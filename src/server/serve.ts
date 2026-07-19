@@ -30,6 +30,22 @@ export const serve = ({
 }: ServeOptions): Promise<number> => {
   const html = readFileSync(htmlPath);
   return new Promise((resolve) => {
+    let settled = false;
+    let fellBack = false;
+
+    const finish = (code: number): void => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(idle);
+      // Drop keep-alive / browser tabs so the process can exit (never-hang).
+      if (typeof server.closeAllConnections === "function") {
+        server.closeAllConnections();
+      }
+      server.close();
+      // Resolve immediately — do not wait for close() (open sockets can stall it).
+      resolve(code);
+    };
+
     const server = createServer((req, res) => {
       if (req.method === "POST" && req.url === "/decision") {
         collectDecision(
@@ -39,7 +55,7 @@ export const serve = ({
             res.end(
               "<body style='font:16px system-ui;padding:3rem'>Decision received — return to your terminal.</body>",
             );
-            server.close(() => resolve(0));
+            finish(0);
           },
           outPath,
         );
@@ -49,7 +65,20 @@ export const serve = ({
       res.end(html);
     });
 
-    const onListening = (): void => {
+    server.on("error", (err: NodeJS.ErrnoException) => {
+      if (err.code === "EADDRINUSE" && port !== 0 && !fellBack) {
+        // Preferred port busy — let OS pick any available one
+        fellBack = true;
+        server.listen(0, "127.0.0.1");
+        return;
+      }
+      if (!settled) {
+        process.stderr.write(`planpage: server error — ${err.message}\n`);
+        finish(2);
+      }
+    });
+
+    server.listen(port, "127.0.0.1", () => {
       const address = server.address() as AddressInfo;
       const url = `http://127.0.0.1:${address.port}/`;
       if (port !== 0 && address.port !== port) {
@@ -58,26 +87,11 @@ export const serve = ({
       process.stdout.write(`planpage: serving ${url}\n`);
       process.stdout.write("planpage: waiting for your decision (Approve / Adjust)…\n");
       openBrowser(url);
-    };
-
-    const tryListen = (p: number): void => {
-      server.once("error", (err: NodeJS.ErrnoException) => {
-        if (err.code === "EADDRINUSE" && p !== 0) {
-          // Preferred port busy — let OS pick any available one
-          server.once("error", () => resolve(2));
-          server.listen(0, "127.0.0.1", onListening);
-        } else {
-          resolve(2);
-        }
-      });
-      server.listen(p, "127.0.0.1", onListening);
-    };
-
-    tryListen(port);
+    });
 
     const idle = setTimeout(() => {
       process.stderr.write("planpage: timed out waiting for a decision\n");
-      server.close(() => resolve(3));
+      finish(3);
     }, timeoutSec * 1000);
     idle.unref();
   });

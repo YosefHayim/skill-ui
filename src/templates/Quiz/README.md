@@ -13,7 +13,7 @@ A **graded quiz** page — a running score, a progress bar, and multiple-choice 
       "id": "q-island",
       "group": "Rendering",
       "question": "How does a template add interactivity?",
-      "explanation": "A constant island from clientScript.ts, injected by the Shell and gated by a flag — never a <script> in a template.",
+      "explanation": "A constant island from render/clientScript/, injected by the Shell and gated by a flag — never a <script> in a template.",
       "options": [
         { "id": "shell-flag", "label": "A constant island gated by a Shell flag", "correct": true },
         { "id": "inline", "label": "An inline <script> in the template" },
